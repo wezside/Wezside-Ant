@@ -4,7 +4,7 @@ Wezside Ant Scripts
 This project is intended to be used as a submodule. 
 
 	git submodule init 
-	git submodule add <gitrepo> ./
+	git submodule add git@github.com:wezside/Wezside-Ant.git ./
 	git submodule update 
 	
 
