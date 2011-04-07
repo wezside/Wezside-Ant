@@ -148,7 +148,7 @@
 		</subant>	
 	</target>
 	
-	<target name="build-all">
+	<target name="build-all" depends="win,linux">
 		<antcall target="clean" />
 		<antcall target="build-toolkit" />
 		<antcall target="toolkit-components" />
