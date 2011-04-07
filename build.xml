@@ -82,6 +82,11 @@
 				<include name="wezside.toolkit.*" />
 			</fileset>
 		</copy>	
+		<copy todir="${basedir}/../Toolkit-Components/swc/" verbose="false">
+			<fileset dir="swc" defaultexcludes="true">
+				<include name="wezside.toolkit.*" />
+			</fileset>
+		</copy>	
 		
 		<echo message="Compile Toolkit-Components SWC ${version}${build.int}" />
 		<subant buildpath="${basedir}/../Toolkit-Components" genericantfile="${basedir}/ant/flex/build.xml">
