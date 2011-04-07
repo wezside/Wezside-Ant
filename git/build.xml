@@ -15,7 +15,7 @@
 		<sequential>
 			<echo message="git @{command} " />
 			<exec executable="${GIT_HOME}git" dir="@{dir}">
-				<env key="HOME" value="${git.config}"/>
+				<env key="HOME" value="${GIT_CONFIG}"/>
 				<arg value="@{command}" />
 				<args />
 			</exec>
@@ -40,9 +40,6 @@
 		<condition property="tag.release">
 			<matches pattern="([0-9][0-9][0-9]0)" string="${build.int}" />
 		</condition>
-		<propertyfile file="${prop.file}" comment="Update build version">
-			<entry key="build.int" type="int" default="0001" operation="+" pattern="0000" />
-		</propertyfile>		
 		<echo message="[Auto Build] Commit ${project.name} Release ${version}${build.int}" />
 		<git command="add" dir="${basedir}">
 			<args>
@@ -70,7 +67,7 @@
 	</target>
 
 	<target name="push-remote" depends="tag">
-		<echo message="Pushing to remote repository" />
+		<echo message="Push origin master " />
 		<git-push-to-branch branch="master" remoteRepositoryName="origin" />
 	</target>
 </project>

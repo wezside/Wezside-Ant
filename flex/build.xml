@@ -7,7 +7,7 @@
 	 -->
 	 
 	<!-- Prepare file list for inclusion in compc process ala ledtechdesign.com/2009/01/flex-shell-ant-tasks/ -->
-	<target name="resolve-class-path" depends="inject-version">
+	<target name="resolve-class-path">
 		<path id="list_1">
 			<fileset dir="${basedir}/src">
 				<include name="com/wezside/**" />
@@ -29,7 +29,8 @@
 	</target>	 
 	
 	<!-- Build SWC -->
-	<target name="build-swc" depends="resolve-class-path">	
+	<target name="build-swc" depends="resolve-class-path">
+		<echo message="Wezside Util: Flex: Build SWC" />
 		<compc output="${swc.file}" 
 			   fork="true"
 			   maxmemory="512m">

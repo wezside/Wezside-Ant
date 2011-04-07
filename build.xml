@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="Build All" default="build-all" basedir="..">
 
-	<property file="${basedir}/ant/.toolkit-properties" />
+	<property file="${basedir}/ant/.properties" />
 	
 	<condition property="isLinux">
 	  <os family="unix" />
@@ -15,7 +15,8 @@
 	    <echo message="OS is Linux" />
 		<property name="FLEX_HOME" value="${FLEX_HOME_LINUX}"/>
 		<property name="GIT_HOME" value="${GIT_HOME_LINUX}"/>
-		<property name="GIT_CONFIG" value="${git.config.linux}"/>		
+		<property name="GIT_CONFIG" value="${git.config.linux}"/>	
+		<property name="prop.file" value="${basedir}/ant/.properties"/>			
 	</target>
 	
 	<target name="win" if="isWin">
@@ -23,16 +24,33 @@
 		<property name="FLEX_HOME" value="${FLEX_HOME_PC}"/>
 		<property name="GIT_HOME" value="${GIT_HOME_PC}"/>
 		<property name="GIT_CONFIG" value="${git.config.pc}"/>		
+		<property name="prop.file" value="${basedir}/ant/.properties"/>	
 	</target>		
 	
 	<target name="build-all" depends="win,linux">
 		
+		<taskdef resource="flexTasks.tasks" classpath="${FLEX_HOME}/ant/lib/flexTasks.jar" />		
+		<propertyfile file="${prop.file}" comment="Update build version">
+			<entry key="build.int" type="int" default="0001" operation="+" pattern="0000" />
+		</propertyfile>
+				
 		<!-- Compile Toolkit SWC -->
 		<echo message="Compile Toolkit SWC ${version}${build.int}" />
 		<subant buildpath="." genericantfile="${basedir}/ant/flex/build.xml">
+			<property name="FLEX_HOME" value="${FLEX_HOME}"/>
 			<property name="swc.file" value="${basedir}/swc/wezside.toolkit.${version}${build.int}.swc"/>
 		</subant>
 		
+		<!-- Commit to remote Git Repo -->
+		<echo message="Git Operations for Toolkit ${version}${build.int}" />
+		<subant buildpath="." genericantfile="${basedir}/ant/git/build.xml">
+			<property name="GIT_HOME" value="${GIT_HOME}"/>
+			<property name="GIT_CONFIG" value="${GIT_CONFIG}"/>
+			<property name="git.author" value="${git.author}"/>
+			<property name="project.name" value="Toolkit"/>
+			<property name="version" value="${version}"/>
+			<property name="build.int" value="${build.int}"/>
+		</subant>
 		
 		<!--
 		<subant genericantfile="${basedir}/ant/build-toolkit.xml" buildpath="." />
