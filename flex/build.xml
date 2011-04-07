@@ -4,10 +4,11 @@
 	<!-- 
 		A simple build script to compile a SWC from a set of class files
 		@param swc.file The output path and swc filename	
+		@param external.libs An Ant Fileset containing all required external libs
 	 -->
 	 
 	<!-- Prepare file list for inclusion in compc process ala ledtechdesign.com/2009/01/flex-shell-ant-tasks/ -->
-	<target name="resolve-class-path" depends="inject-version">
+	<target name="resolve-class-path">
 		<path id="list_1">
 			<fileset dir="${basedir}/src">
 				<include name="com/wezside/**" />
@@ -29,11 +30,17 @@
 	</target>	 
 	
 	<!-- Build SWC -->
-	<target name="build-swc" depends="resolve-class-path">	
+	<target name="build-swc" depends="resolve-class-path">
+		<echo message="Wezside Util: Flex: Build SWC" />
 		<compc output="${swc.file}" 
 			   fork="true"
 			   maxmemory="512m">
+			
+			<source-path path-element="${basedir}/src"/>
 			<include-sources dir="${basedir}/src" includes="${project_classes_property}"/>
+			
+			<external-library-path file="${basedir}/lib/wezside.toolkit.*.swc" append="true"/>
+			<external-library-path file="${basedir}/lib/greensock.swc" append="true"/>
 		</compc>
 	</target>	
 </project>
