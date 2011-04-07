@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="Build All" default="toolkit-components" basedir="..">
+<project name="Build All" default="build-all" basedir="..">
 
 	<property file="${basedir}/ant/.properties" />
 	
@@ -35,7 +35,7 @@
 		</delete>
 	</target>
 	
-	<target name="build-toolkit" depends="clean">
+	<target name="build-toolkit">
 		
 		<taskdef resource="flexTasks.tasks" classpath="${FLEX_HOME}/ant/lib/flexTasks.jar" />		
 		<propertyfile file="${prop.file}" comment="Update build version">
@@ -65,7 +65,7 @@
 	</target>
 	
 	<!-- COMPILE TOOLKIT_COMPONENTS SWC -->
-	<target name="toolkit-components" if="toolkit-comps-available" depends="build-toolkit">
+	<target name="toolkit-components" if="toolkit-comps-available">
 	
 		<delete>
 			<fileset dir="${basedir}/../Toolkit-Components/lib/">
@@ -105,7 +105,7 @@
 	</target>
 	 
 	<!-- BUILD MODULO -->
-	<target name="modulo" if="modulo-available" depends="toolkit-components">
+	<target name="modulo" if="modulo-available">
 		
 		<propertyfile file="${prop.file}" comment="Update build version">
 			<entry key="modulo.build.int" type="int" default="0001" operation="+" pattern="0000" />
@@ -147,4 +147,10 @@
 			<property name="build.int" value="${modulo.build.int}"/>
 		</subant>	
 	</target>
+	
+	<target name="build-all">
+		<antcall target="clean" />
+		<antcall target="build-toolkit" />
+		<antcall target="toolkit-components" />
+	</target>	
 </project>
