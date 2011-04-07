@@ -27,7 +27,7 @@
 		<property name="prop.file" value="${basedir}/ant/.properties"/>	
 	</target>		
 	
-	<target name="clean" depends="win,linux">
+	<target name="clean">
 		<delete>
 			<fileset dir="${basedir}/swc/">
 			    <include name="wezside.toolkit.*"/>
