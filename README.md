@@ -1,7 +1,8 @@
 Wezside Ant Scripts
 ====================
 
-This project is intended to be used as a submodule. 
+This project is intended to be used as a submodule to compile the Wezside Toolkit however 
+the individual ant files can be used as standalone. Simply use subant to call the build files with the correct parameters.  
 
 	git submodule init 
 	git submodule add git@github.com:wezside/Wezside-Ant.git ./
