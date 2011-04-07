@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="Wezside Util: Flex" default="build-swc" basedir="..">
+	
+	<!-- 
+		A simple build script to compile a SWC from a set of class files
+		@param swc.file The output path and swc filename	
+	 -->
+	 
+	<!-- Prepare file list for inclusion in compc process ala ledtechdesign.com/2009/01/flex-shell-ant-tasks/ -->
+	<target name="resolve-class-path" depends="inject-version">
+		<path id="list_1">
+			<fileset dir="${basedir}/src">
+				<include name="com/wezside/**" />
+				<exclude name="**/test/**" />
+				<exclude name="**/gs/**" />
+				<exclude name="**/Animation/**" />
+				<exclude name="**/sample/**" />
+				<exclude name="**/test/**" />
+			</fileset>
+		</path>
+		<pathconvert property="project_classes_property" pathsep="," dirsep="/" refid="list_1">
+			<map from="${basedir}/src/" to="" />
+			<mapper>
+				<chainedmapper>
+					<!--<globmapper from="*.as" to="*.as" />-->
+				</chainedmapper>
+			</mapper>
+		</pathconvert>
+	</target>	 
+	
+	<!-- Build SWC -->
+	<target name="build-swc" depends="resolve-class-path">	
+		<compc output="${swc.file}" 
+			   fork="true"
+			   maxmemory="512m">
+			<include-sources dir="${basedir}/src" includes="${project_classes_property}"/>
+		</compc>
+	</target>	
+</project>

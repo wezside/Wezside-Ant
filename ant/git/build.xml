@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="Toolkit Build Git" default="push-remote" basedir="../../">
+
+	<!--
+		Common Git operations, add, commit, tag and push to remote repo. 
+		@param GIT_HOME The path to where GIT is installed on the system
+		@param GIT_CONFIG The git config location (usually the user's root/home folder)  
+		@param git.author The name of the author - used for when pushing to remote
+	-->
+	
+	<macrodef name="git">
+		<attribute name="command" />
+		<attribute name="dir" default="" />
+		<element name="args" optional="true" />
+		<sequential>
+			<echo message="git @{command} " />
+			<exec executable="${GIT_HOME}git" dir="@{dir}">
+				<env key="HOME" value="${git.config}"/>
+				<arg value="@{command}" />
+				<args />
+			</exec>
+		</sequential>
+	</macrodef>
+
+	<macrodef name="git-push-to-branch">
+		<attribute name="branch" />
+		<attribute name="remoteRepositoryName" />
+		<sequential>
+			<git command="push" dir="${basedir}">
+				<args>
+					<arg value="@{remoteRepositoryName}" />
+					<arg value="@{branch}" />
+					<arg value="--tags" />
+				</args>
+			</git>
+		</sequential>
+	</macrodef>
+
+	<target name="commit">		
+		<condition property="tag.release">
+			<matches pattern="([0-9][0-9][0-9]0)" string="${build.int}" />
+		</condition>
+		<propertyfile file="${prop.file}" comment="Update build version">
+			<entry key="build.int" type="int" default="0001" operation="+" pattern="0000" />
+		</propertyfile>		
+		<echo message="[Auto Build] Commit ${project.name} Release ${version}${build.int}" />
+		<git command="add" dir="${basedir}">
+			<args>
+				<arg value="." />
+			</args>
+		</git>
+		<git command="commit" dir="${basedir}">
+			<args>
+				<arg value="." />
+				<arg value="-m" />
+				<arg value="[Auto Build] ${project.name} ${version}${build.int}" />
+			</args>
+		</git>
+	</target>
+
+	<target name="tag" if="tag.release" depends="commit">
+		<echo message="[Auto Build ] Tag ${project.name} Release ${version}${build.int}] " />
+		<git command="tag" dir="${basedir}">
+			<args>
+				<arg value="${version}${build.int}" />
+				<arg value="-m" />
+				<arg value="[Auto Tag ${project.name} Release ${version}${build.int}]" />
+			</args>
+		</git>
+	</target>
+
+	<target name="push-remote" depends="tag">
+		<echo message="Pushing to remote repository" />
+		<git-push-to-branch branch="master" remoteRepositoryName="origin" />
+	</target>
+</project>

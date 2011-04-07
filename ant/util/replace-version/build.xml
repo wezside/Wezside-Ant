@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="Wezside Ant Util: Increment Version" default="inject-version" basedir="..">
+
+	<!-- 
+		A simple ant target to search and replace a version number with the format major.minor.build
+		
+		@param target.file The file contents to search through and replace
+		@param prop.file The property file 
+		 -->
+
+	<!-- Inject version -->
+	<target name="inject-version">		
+		<loadfile property="file.contents" srcFile="${target.file}">
+			<filterchain>
+				<tokenfilter>
+					<replaceregex pattern="(Build [0-9]\.[0-9])(\.[0-9]+)" replace="Build ${version}${build.int}" flags="gis" />
+				</tokenfilter>
+			</filterchain>
+		</loadfile>		
+	</target>	
+	
+	<!--  Sort Properties in prop file alphabetically -->
+	<target name="sort-propfile">
+		<loadfile property="propertyfile.content" srcfile="${prop.file}" />
+		<property name="eol" value="${line.separator}" />
+		<pathconvert property="sorted" pathsep="${eol}">
+			<sort>
+				<tokens>
+					<string value="${propertyfile.content}" />
+					<stringtokenizer delims="${line.separator}" />
+				</tokens>
+			</sort>
+		</pathconvert>
+		<echo message="${sorted}" file="${prop.file}" />
+		<property file="${prop.file}" />
+		<echo message="${file.contents}" file="${target.file}" />
+	</target>
+</project>
