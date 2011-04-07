@@ -6,6 +6,9 @@
 		@param GIT_HOME The path to where GIT is installed on the system
 		@param GIT_CONFIG The git config location (usually the user's root/home folder)  
 		@param git.author The name of the author - used for when pushing to remote
+		@param project.name The Git Project name
+		@param version The major+minor version number
+		@param build.int The build number
 	-->
 	
 	<macrodef name="git">

@@ -4,6 +4,7 @@
 	<!-- 
 		A simple build script to compile a SWC from a set of class files
 		@param swc.file The output path and swc filename	
+		@param external.libs An Ant Fileset containing all required external libs
 	 -->
 	 
 	<!-- Prepare file list for inclusion in compc process ala ledtechdesign.com/2009/01/flex-shell-ant-tasks/ -->
@@ -34,7 +35,12 @@
 		<compc output="${swc.file}" 
 			   fork="true"
 			   maxmemory="512m">
+			
+			<source-path path-element="${basedir}/src"/>
 			<include-sources dir="${basedir}/src" includes="${project_classes_property}"/>
+			
+			<external-library-path file="${basedir}/lib/wezside.toolkit.*.swc" append="true"/>
+			<external-library-path file="${basedir}/lib/greensock.swc" append="true"/>
 		</compc>
 	</target>	
 </project>
