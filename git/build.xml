@@ -9,6 +9,10 @@
 		@param project.name The Git Project name
 		@param version The major+minor version number
 		@param build.int The build number
+		@param branch The branch to push to
+		@param remote.repo The remote repository to push to
+		
+		@author Wesley.Swanepoel
 	-->
 	
 	<macrodef name="git">
@@ -71,6 +75,6 @@
 
 	<target name="push-remote" depends="tag">
 		<echo message="Push origin master " />
-		<git-push-to-branch branch="master" remoteRepositoryName="origin" />
+		<git-push-to-branch branch="${branch}" remoteRepositoryName="${remote.repo}" />
 	</target>
 </project>

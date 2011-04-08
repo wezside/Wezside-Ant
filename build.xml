@@ -40,8 +40,7 @@
 	</target>
 	
 	<target name="toolkit">
-		
-		
+				
 		<propertyfile file="${prop.file}" comment="Update build version">
 			<entry key="build.int" type="int" default="0001" operation="+" pattern="0000" />
 		</propertyfile>
@@ -62,8 +61,9 @@
 			<property name="project.name" value="Toolkit"/>
 			<property name="version" value="${version}"/>
 			<property name="build.int" value="${build.int}"/>
+			<property name="branch" value="master"/>
+			<property name="remote.repo" value="origin"/>
 		</subant> 
-		
 	</target>
 	
 	<!-- COMPILE TOOLKIT_COMPONENTS SWC -->
@@ -105,9 +105,9 @@
 			<property name="project.name" value="Toolkit-Components"/>
 			<property name="version" value="${version}"/>
 			<property name="build.int" value="${build.int}"/>
+			<property name="branch" value="master"/>
+			<property name="remote.repo" value="origin"/>
 		</subant>
-				
-
 	</target>
 	 
 	<!-- BUILD MODULO -->
@@ -151,13 +151,15 @@
 			<property name="project.name" value="Modulo"/>
 			<property name="version" value="${modulo.version}"/>
 			<property name="build.int" value="${modulo.build.int}"/>
+			<property name="branch" value="master"/>
+			<property name="remote.repo" value="origin"/>
 		</subant>	
 	</target>
 	
 	<target name="build-asdocs" depends="win,linux">
 				
 		<delete>
-			<fileset dir="${basedir}/../Toolkit-Wiki/docs">
+			<fileset dir="${basedir}/../Toolkit-gh-pages/docs">
 			    <include name="**/toolkit/**"/>
 			    <include name="**/comps/***"/>
 			</fileset>
@@ -166,7 +168,7 @@
 		<echo message="Generating ASDocs for Toolkit" />
 		<subant buildpath="." genericantfile="${basedir}/ant/asdoc/build.xml">
 			<property name="ASDOC_HOME" value="${ASDOC_HOME}"/>
-			<property name="output.dir" value="${basedir}/../Toolkit-Wiki/docs/toolkit"/>
+			<property name="output.dir" value="${basedir}/../Toolkit-gh-pages/docs/toolkit"/>
 			<property name="lenient" value="false"/>
 			<property name="page.title" value="Wezside Toolkit"/>
 			<property name="exclude.dependancies" value="false"/>
@@ -177,12 +179,25 @@
 		<echo message="Generating ASDocs for Toolkit Components" />
 		<subant buildpath="${basedir}/../Toolkit-Components" genericantfile="${basedir}/ant/asdoc/build.xml">
 			<property name="ASDOC_HOME" value="${ASDOC_HOME}"/>
-			<property name="output.dir" value="${basedir}/../Toolkit-Wiki/docs/comps"/>
+			<property name="output.dir" value="${basedir}/../Toolkit-gh-pages/docs/comps"/>
 			<property name="lenient" value="false"/>
 			<property name="page.title" value="Wezside Toolkit Components"/>
 			<property name="exclude.dependancies" value="true"/>
 			<property name="src.path" value="${basedir}/../Toolkit-Components/src"/>
 			<property name="class.path" value="c:\Projects\Wezside\Toolkit-Components\src"/>
+		</subant>
+		
+		<!-- Commit to remote Git Repo -->
+		<echo message="Git Operations for Toolkit API Docs ${version}${build.int}" />
+		<subant buildpath="${basedir}/../Toolkit-gh-pages" genericantfile="${basedir}/ant/git/build.xml">
+			<property name="GIT_HOME" value="${GIT_HOME}"/>
+			<property name="GIT_CONFIG" value="${GIT_CONFIG}"/>
+			<property name="git.author" value="${git.author}"/>
+			<property name="project.name" value="Toolkit API Docs"/>
+			<property name="version" value="${version}"/>
+			<property name="build.int" value="${build.int}"/>
+			<property name="branch" value="gh-pages"/>
+			<property name="remote.repo" value="origin"/>							
 		</subant>
 	</target>
 	
@@ -195,6 +210,9 @@
 		
 		<available file="${basedir}/../Toolkit-Wiki/About.md" property="wiki-available" />
 		<echo message="Toolkit Wiki is available: ${wiki-available}" />		
+		
+		<available file="${basedir}/../Toolkit-gh-pages/index.html" property="pages-available" />
+		<echo message="Toolkit GH-Pages is available: ${pages-available}" />		
 		
 		<antcall target="clean" />
 		<antcall target="build-toolkit" />
