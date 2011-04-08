@@ -11,17 +11,21 @@
 	    <os family="windows" />		
 	</condition>	
 	
-	<target name="linux" if="isLinux">
+	<target name="linux" if="isLinux">		
+		<taskdef resource="flexTasks.tasks" classpath="${FLEX_HOME}/ant/lib/flexTasks.jar" />	
 	    <echo message="OS is Linux" />
 		<property name="FLEX_HOME" value="${FLEX_HOME_LINUX}"/>
+		<property name="ASDOC_HOME" value="${FLEX_HOME}/bin/asdoc.exe"/>
 		<property name="GIT_HOME" value="${GIT_HOME_LINUX}"/>
 		<property name="GIT_CONFIG" value="${git.config.linux}"/>	
 		<property name="prop.file" value="${basedir}/ant/.properties"/>			
 	</target>
 	
-	<target name="win" if="isWin">
+	<target name="win" if="isWin">		
+		<taskdef resource="flexTasks.tasks" classpath="${FLEX_HOME}/ant/lib/flexTasks.jar" />	
 	    <echo message="OS is Windows" />
 		<property name="FLEX_HOME" value="${FLEX_HOME_PC}"/>
+		<property name="ASDOC_HOME" value="${FLEX_HOME}/bin/asdoc.exe"/>
 		<property name="GIT_HOME" value="${GIT_HOME_PC}"/>
 		<property name="GIT_CONFIG" value="${git.config.pc}"/>		
 		<property name="prop.file" value="${basedir}/ant/.properties"/>	
@@ -35,9 +39,9 @@
 		</delete>
 	</target>
 	
-	<target name="build-toolkit">
+	<target name="toolkit">
 		
-		<taskdef resource="flexTasks.tasks" classpath="${FLEX_HOME}/ant/lib/flexTasks.jar" />		
+		
 		<propertyfile file="${prop.file}" comment="Update build version">
 			<entry key="build.int" type="int" default="0001" operation="+" pattern="0000" />
 		</propertyfile>
@@ -150,13 +154,27 @@
 		</subant>	
 	</target>
 	
+	<target name="build-asdocs" depends="win,linux">	
+		<echo message="Generating ASDocs for Toolkit" />
+		<subant buildpath="." genericantfile="${basedir}/ant/asdoc/build.xml">
+			<property name="ASDOC_HOME" value="${ASDOC_HOME}"/>
+			<property name="output.dir" value="${basedir}/../Toolkit-Wiki/docs/toolkit"/>
+			<property name="lenient" value="false"/>
+			<property name="page.title" value="Wezside Toolkit"/>
+			<property name="exclude.dependancies" value="false"/>
+			<property name="src.path" value="${basedir}/src"/>
+		</subant>
+	</target>
+	
 	<target name="build-all" depends="win,linux">
-		
 		<available file="${basedir}/../Toolkit-Components/README.md" property="toolkit-comps-available" />
 		<echo message="Project Toolkit-Components is available: ${toolkit-comps-available}" />
 		
 		<available file="${basedir}/../Modulo/README.md" property="modulo-available" />
-		<echo message="Project Modulo is available: ${modulo-available}" />		
+		<echo message="Project Modulo is available: ${modulo-available}" />
+		
+		<available file="${basedir}/../Toolkit-Wiki/About.md" property="wiki-available" />
+		<echo message="Toolkit Wiki is available: ${wiki-available}" />		
 		
 		<antcall target="clean" />
 		<antcall target="build-toolkit" />

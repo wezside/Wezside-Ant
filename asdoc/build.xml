@@ -3,16 +3,52 @@
 	
 	<!--
 		Ant Doc generator script.
+		@param FLEX_HOME The home directory for the Flex SDK
 		@param output.dir The output directory
 		@param lenient A Boolean value indicating how strict the asdoc compiler should be
-		@param classes A concatenated string of all classes to include
 		@param exclude.dependancies A Boolean value indicating if referenced (imported) classes should be included
+		@param page.title The Page title
+		@param src.path The source path where the classes can be found
+				
+		@author Wesley.Swanepoel
 	-->
 	
-	<target name="generate-docs"> 		
-	    <asdoc output="${output.dir}" lenient="${lenient}" failonerror="true" exclude-dependencies="${exclude.dependancies}"> 
-	        <doc-classes class="${classes}"/> 
-	    </asdoc> 
+	 
+	<!-- Prepare file list for inclusion in compc process ala ledtechdesign.com/2009/01/flex-shell-ant-tasks/ -->
+	<target name="resolve-class-path">
+		<path id="list_1">
+			<fileset dir="${basedir}/src">
+				<include name="com/wezside/**" />
+				<exclude name="**/test/**" />
+				<exclude name="**/gs/**" />
+				<exclude name="**/Animation/**" />
+				<exclude name="**/sample/**" />
+				<exclude name="**/test/**" />
+			</fileset>
+		</path>
+		<pathconvert property="classes" pathsep=" " dirsep="." refid="list_1">
+			<map from="${basedir}/src/" to="" />
+			<mapper>
+				<chainedmapper>
+					<globmapper from="*.as" to="" />
+				</chainedmapper>
+			</mapper>
+		</pathconvert>
+	</target>		
+	
+	<target name="generate-docs" depends="resolve-class-path">
+		
+		<echo message="${basedir}/src" />
+		
+	     <exec executable="${ASDOC_HOME}" failonerror="true">
+	            <arg line="-doc-classes ${classes}" />
+	            <arg value="-window-title" />
+	            <arg value="${page.title}" />
+	            <arg value="-output" />
+	            <arg value="${output.dir}" />
+	            <arg value="-source-path" />
+	            <arg value="${src.path}" />	     	
+		</exec>
 	</target>
 	
 </project>
