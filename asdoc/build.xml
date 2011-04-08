@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="Build All" default="generate-docs" basedir="..">
+	
+	<!--
+		Ant Doc generator script.
+		@param output.dir The output directory
+		@param lenient A Boolean value indicating how strict the asdoc compiler should be
+		@param classes A concatenated string of all classes to include
+		@param exclude.dependancies A Boolean value indicating if referenced (imported) classes should be included
+	-->
+	
+	<target name="generate-docs"> 		
+	    <asdoc output="${output.dir}" lenient="${lenient}" failonerror="true" exclude-dependencies="${exclude.dependancies}"> 
+	        <doc-classes class="${classes}"/> 
+	    </asdoc> 
+	</target>
+	
+</project>
