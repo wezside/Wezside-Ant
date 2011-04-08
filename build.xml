@@ -60,8 +60,6 @@
 			<property name="build.int" value="${build.int}"/>
 		</subant> 
 		
-		<available file="${basedir}/../Toolkit-Components/README.md" property="toolkit-comps-available" />
-		<echo message="Project Toolkit-Components is available: ${toolkit-comps-available}" />
 	</target>
 	
 	<!-- COMPILE TOOLKIT_COMPONENTS SWC -->
@@ -105,8 +103,7 @@
 			<property name="build.int" value="${build.int}"/>
 		</subant>
 				
-		<available file="${basedir}/../Modulo/README.md" property="modulo-available" />
-		<echo message="Project Modulo is available: ${modulo-available}" />		
+
 	</target>
 	 
 	<!-- BUILD MODULO -->
@@ -154,6 +151,13 @@
 	</target>
 	
 	<target name="build-all" depends="win,linux">
+		
+		<available file="${basedir}/../Toolkit-Components/README.md" property="toolkit-comps-available" />
+		<echo message="Project Toolkit-Components is available: ${toolkit-comps-available}" />
+		
+		<available file="${basedir}/../Modulo/README.md" property="modulo-available" />
+		<echo message="Project Modulo is available: ${modulo-available}" />		
+		
 		<antcall target="clean" />
 		<antcall target="build-toolkit" />
 		<antcall target="toolkit-components" />
