@@ -154,7 +154,15 @@
 		</subant>	
 	</target>
 	
-	<target name="build-asdocs" depends="win,linux">	
+	<target name="build-asdocs" depends="win,linux">
+				
+		<delete>
+			<fileset dir="${basedir}/../Toolkit-Wiki/docs">
+			    <include name="**/toolkit/**"/>
+			    <include name="**/comps/***"/>
+			</fileset>
+		</delete>			
+		
 		<echo message="Generating ASDocs for Toolkit" />
 		<subant buildpath="." genericantfile="${basedir}/ant/asdoc/build.xml">
 			<property name="ASDOC_HOME" value="${ASDOC_HOME}"/>
@@ -163,6 +171,18 @@
 			<property name="page.title" value="Wezside Toolkit"/>
 			<property name="exclude.dependancies" value="false"/>
 			<property name="src.path" value="${basedir}/src"/>
+			<property name="class.path" value="${basedir}/src"/>
+		</subant>
+		
+		<echo message="Generating ASDocs for Toolkit Components" />
+		<subant buildpath="${basedir}/../Toolkit-Components" genericantfile="${basedir}/ant/asdoc/build.xml">
+			<property name="ASDOC_HOME" value="${ASDOC_HOME}"/>
+			<property name="output.dir" value="${basedir}/../Toolkit-Wiki/docs/comps"/>
+			<property name="lenient" value="false"/>
+			<property name="page.title" value="Wezside Toolkit Components"/>
+			<property name="exclude.dependancies" value="true"/>
+			<property name="src.path" value="${basedir}/../Toolkit-Components/src"/>
+			<property name="class.path" value="c:\Projects\Wezside\Toolkit-Components\src"/>
 		</subant>
 	</target>
 	

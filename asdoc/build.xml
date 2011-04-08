@@ -9,16 +9,19 @@
 		@param exclude.dependancies A Boolean value indicating if referenced (imported) classes should be included
 		@param page.title The Page title
 		@param src.path The source path where the classes can be found
-				
+		@param class.path The class path for where the classes to be documented are
+		
 		@author Wesley.Swanepoel
 	-->
 	
 	 
 	<!-- Prepare file list for inclusion in compc process ala ledtechdesign.com/2009/01/flex-shell-ant-tasks/ -->
 	<target name="resolve-class-path">
+		<echo message="${class.path}" />
 		<path id="list_1">
-			<fileset dir="${basedir}/src">
+			<fileset dir="${class.path}">
 				<include name="com/wezside/**" />
+				<exclude name="com/wezside/components/survey/**" />
 				<exclude name="**/test/**" />
 				<exclude name="**/gs/**" />
 				<exclude name="**/Animation/**" />
@@ -27,16 +30,17 @@
 			</fileset>
 		</path>
 		<pathconvert property="classes" pathsep=" " dirsep="." refid="list_1">
-			<map from="${basedir}/src/" to="" />
+			<map from="${class.path}/" to="" />
 			<mapper>
 				<chainedmapper>
 					<globmapper from="*.as" to="" />
 				</chainedmapper>
 			</mapper>
 		</pathconvert>
+		<echo message="Classes ${classes}" />
 	</target>		
 	
-	<target name="generate-docs" depends="resolve-class-path">
+	<target name="generate-docs" depends="resolve-class-path" if="classes">
 		
 		<echo message="${basedir}/src" />
 		
@@ -47,7 +51,11 @@
 	            <arg value="-output" />
 	            <arg value="${output.dir}" />
 	            <arg value="-source-path" />
-	            <arg value="${src.path}" />	     	
+	            <arg value="${basedir}/src" />
+	            <arg value="-external-library-path" />
+	            <arg value="${basedir}/lib" />
+	            <arg value="-left-frameset-width" />
+	            <arg value="300" />
 		</exec>
 	</target>
 	
