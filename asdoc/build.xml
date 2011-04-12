@@ -42,8 +42,7 @@
 	
 	<target name="generate-docs" depends="resolve-class-path" if="classes">
 		
-		<echo message="${basedir}/src" />
-		
+		 <echo message="${basedir}/src" />		
 	     <exec executable="${ASDOC_HOME}" failonerror="true">
 	            <arg line="-doc-classes ${classes}" />
 	            <arg value="-window-title" />
