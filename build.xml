@@ -12,23 +12,23 @@
 	</condition>	
 	
 	<target name="linux" if="isLinux">		
-		<taskdef resource="flexTasks.tasks" classpath="${FLEX_HOME}/ant/lib/flexTasks.jar" />	
 	    <echo message="OS is Linux" />
 		<property name="FLEX_HOME" value="${FLEX_HOME_LINUX}"/>
 		<property name="ASDOC_HOME" value="${FLEX_HOME}/bin/asdoc.exe"/>
 		<property name="GIT_HOME" value="${GIT_HOME_LINUX}"/>
 		<property name="GIT_CONFIG" value="${git.config.linux}"/>	
 		<property name="prop.file" value="${basedir}/ant/.properties"/>			
+		<taskdef resource="flexTasks.tasks" classpath="${FLEX_HOME}/ant/lib/flexTasks.jar" />	
 	</target>
 	
 	<target name="win" if="isWin">		
-		<taskdef resource="flexTasks.tasks" classpath="${FLEX_HOME}/ant/lib/flexTasks.jar" />	
 	    <echo message="OS is Windows" />
 		<property name="FLEX_HOME" value="${FLEX_HOME_PC}"/>
 		<property name="ASDOC_HOME" value="${FLEX_HOME}/bin/asdoc.exe"/>
 		<property name="GIT_HOME" value="${GIT_HOME_PC}"/>
 		<property name="GIT_CONFIG" value="${git.config.pc}"/>		
 		<property name="prop.file" value="${basedir}/ant/.properties"/>	
+		<taskdef resource="flexTasks.tasks" classpath="${FLEX_HOME}/ant/lib/flexTasks.jar" />	
 	</target>		
 	
 	<target name="clean">
@@ -215,7 +215,7 @@
 		<echo message="Toolkit GH-Pages is available: ${pages-available}" />		
 		
 		<antcall target="clean" />
-		<antcall target="build-toolkit" />
+		<antcall target="toolkit" />
 		<antcall target="toolkit-components" />
 	</target>	
 </project>
