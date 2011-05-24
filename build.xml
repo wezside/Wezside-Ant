@@ -63,6 +63,19 @@
 			<property name="build.int" value="${build.int}"/>
 			<property name="branch" value="master"/>
 			<property name="remote.repo" value="origin"/>
+		</subant>
+		
+		<!-- Commit Toolkit Ant to remote Git Repo -->
+		<echo message="Git Operations for Toolkit ${version}${build.int}" />
+		<subant buildpath="./ant/" genericantfile="${basedir}/ant/git/build.xml">
+			<property name="GIT_HOME" value="${GIT_HOME}"/>
+			<property name="GIT_CONFIG" value="${GIT_CONFIG}"/>
+			<property name="git.author" value="${git.author}"/>
+			<property name="project.name" value="Wezside-Ant"/>
+			<property name="version" value="${version}"/>
+			<property name="build.int" value="${build.int}"/>
+			<property name="branch" value="master"/>
+			<property name="remote.repo" value="origin"/>
 		</subant> 
 	</target>
 	
