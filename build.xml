@@ -97,7 +97,7 @@
 				<include name="wezside.toolkit.*" />
 			</fileset>
 		</copy>	
-		<copy todir="${basedir}/../Toolkit-Components/swc/" verbose="false">
+		<copy todir="${basedir}/../Toolkit-Wiki/swc/" verbose="false">
 			<fileset dir="swc" defaultexcludes="true">
 				<include name="wezside.toolkit.*" />
 			</fileset>
@@ -169,7 +169,7 @@
 		</subant>	
 	</target>
 	
-	<target name="build-asdocs" depends="win,linux">
+	<target name="build-asdocs" depends="win,linux" description="Build ASDOC and update Wiki version">
 				
 		<delete>
 			<fileset dir="${basedir}/../Toolkit-gh-pages/docs">
@@ -179,6 +179,11 @@
 		</delete>			
 		
 		<echo message="Generating ASDocs for Toolkit" />
+		
+		<subant buildpath="." genericantfile="${basedir}/ant/util/replace-version/build.xml">
+			<property name="target.file" value="${basedir}/../Toolkit-Wiki/Latest-Release.md" />
+		</subant>
+		<!--
 		<subant buildpath="." genericantfile="${basedir}/ant/asdoc/build.xml">
 			<property name="ASDOC_HOME" value="${ASDOC_HOME}"/>
 			<property name="output.dir" value="${basedir}/../Toolkit-gh-pages/docs/toolkit"/>
@@ -197,10 +202,10 @@
 			<property name="page.title" value="Wezside Toolkit Components"/>
 			<property name="exclude.dependancies" value="true"/>
 			<property name="src.path" value="${basedir}/../Toolkit-Components/src"/>
-			<property name="class.path" value="c:\Projects\Wezside\Toolkit-Components\src"/>
-		</subant>
+			<property name="class.path" value="${basedir}/../Toolkit-Components/src"/>
+		</subant>-->
 		
-		<!-- Commit to remote Git Repo -->
+		<!-- Commit to remote Git Repo 
 		<echo message="Git Operations for Toolkit API Docs ${version}${build.int}" />
 		<subant buildpath="${basedir}/../Toolkit-gh-pages" genericantfile="${basedir}/ant/git/build.xml">
 			<property name="GIT_HOME" value="${GIT_HOME}"/>
@@ -211,7 +216,7 @@
 			<property name="build.int" value="${build.int}"/>
 			<property name="branch" value="gh-pages"/>
 			<property name="remote.repo" value="origin"/>							
-		</subant>
+		</subant>-->
 	</target>
 	
 	<target name="build-all" depends="win,linux">
@@ -230,5 +235,7 @@
 		<antcall target="clean" />
 		<antcall target="toolkit" />
 		<antcall target="toolkit-components" />
+		<antcall target="build-asdocs" />
+		
 	</target>	
 </project>

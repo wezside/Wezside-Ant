@@ -13,7 +13,7 @@
 		<loadfile property="file.contents" srcFile="${target.file}">
 			<filterchain>
 				<tokenfilter>
-					<replaceregex pattern="(Build [0-9]\.[0-9])(\.[0-9]+)" replace="Build ${version}${build.int}" flags="gis" />
+					<replaceregex pattern="Build ([0-9]+\.[0-9]+)(\.[0-9]+)" replace="Build ${version}${build.int}" flags="gis" />
 				</tokenfilter>
 			</filterchain>
 		</loadfile>		
