@@ -21,15 +21,16 @@
 		<echo message="CLASS PATH: ${class.path}" />
 		
 		<!-- Convert the path to Unix so it's easier to map the classpath -->
-		<path id="class.path.element">
-			<pathelement location="${class.path}"/>
-		</path>		
-		<pathconvert property="unixfied.path" refid="class.path.element" />
-		<echo>Unixfied Path: ${unixfied.path}</echo>
+		<path id="class.path.id" path="${class.path}" />
+		<pathconvert property="class.path.element" refid="class.path.id" />
 		
+		<!-- Get the fileset in classpath
+			 Issue here is the fileset dir attribute won't return any items in the set if the
+			 paths has spaces in them. To get around this use a Path task instead. 
+		 -->
 		<path id="wl.path">
-			<pathelement location="${unixfied.path}"/>
-			<fileset dir="${unixfied.path}">
+			<pathelement location="${class.path.element}/"/>
+			<fileset dir="${class.path.element}/">
 				<include name="com/wezside/**" />
 				<exclude name="com/wezside/components/survey/**" />
 				<exclude name="**/test/**" />
@@ -41,57 +42,32 @@
 	    </path>		
 
 		<!-- Get classpath -->
-		<pathconvert pathsep=" " property="doc" dirsep="." refid="wl.path">
-			<map from="${unixfied.path}" to="" />
-		</pathconvert>
-
-		<echo>DOC: ${doc}</echo>
-		
-		<!--
-		<path id="doc.path" location="${doc}" />
-		<pathconvert property="doc.classes" refid="doc.path" dirsep="." pathsep=" " >
-			
-		</pathconvert>
-		<echo>Space separated classes: ${doc.classes}</echo>
-	
-		
-		<path id="filteredClasses">		
-			<fileset dir="${class.path}">
-				<include name="com/wezside/**" />
-				<exclude name="com/wezside/components/survey/**" />
-				<exclude name="**/test/**" />
-				<exclude name="**/gs/**" />
-				<exclude name="**/Animation/**" />
-				<exclude name="**/sample/**" />
-				<exclude name="**/test/**" />
-			</fileset>
-		</path>
-		<echo>Filtered Classes: ${toString:filteredClasses}</echo>
-		<pathconvert property="classes" pathsep=" " dirsep="." refid="filteredClasses">
-			<map from="${class.path}/" to="" />
+		<pathconvert pathsep=" " property="classes" dirsep="." refid="wl.path">
+			<map from="${class.path.element}/" to="" />
 			<mapper>
-				<chainedmapper>
-					<globmapper from="*.as" to="" />
+				<chainedmapper>								  
+				  <globmapper from="*.as" to="*"/>
 				</chainedmapper>
 			</mapper>
 		</pathconvert>
-		-->
+
+		<echo>DOC CLASSES: ${classes}</echo>
 		
 	</target>		
 	
-	<target name="generate-docs" depends="resolve-class-path" if="classes">
-		
+	<target name="generate-docs" depends="resolve-class-path" if="classes">		
 		 <echo message="${basedir}/src" />		
 	     <exec executable="${ASDOC_HOME}" failonerror="true">
+	            <arg value="-source-path" />
+	            <arg value="${basedir}/src" />	     	
 	            <arg line="-doc-classes ${classes}" />
 	            <arg value="-window-title" />
 	            <arg value="${page.title}" />
 	            <arg value="-output" />
 	            <arg value="${output.dir}" />
-	            <arg value="-source-path" />
-	            <arg value="${basedir}/src" />
-	            <arg value="-external-library-path" />
+	            <arg value="-library-path" />
 	            <arg value="${basedir}/lib" />
+	            <arg value="${FLEX_HOME}/frameworks/libs" />
 	            <arg value="-left-frameset-width" />
 	            <arg value="300" />
 		</exec>

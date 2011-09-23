@@ -187,6 +187,7 @@
 		</subant>
 		
 		<subant buildpath="." genericantfile="${basedir}/ant/asdoc/build.xml">
+			<property name="FLEX_HOME" value="${FLEX_HOME}"/>
 			<property name="ASDOC_HOME" value="${ASDOC_HOME}"/>
 			<property name="output.dir" value="${basedir}/../Toolkit-gh-pages/docs/toolkit"/>
 			<property name="lenient" value="false"/>
@@ -198,6 +199,7 @@
 		
 		<echo message="Generating ASDocs for Toolkit Components" />
 		<subant buildpath="${basedir}/../Toolkit-Components" genericantfile="${basedir}/ant/asdoc/build.xml">
+			<property name="FLEX_HOME" value="${FLEX_HOME}"/>
 			<property name="ASDOC_HOME" value="${ASDOC_HOME}"/>
 			<property name="output.dir" value="${basedir}/../Toolkit-gh-pages/docs/comps"/>
 			<property name="lenient" value="false"/>
