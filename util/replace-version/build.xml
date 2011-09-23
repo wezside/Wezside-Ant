@@ -11,13 +11,13 @@
 
 	<!-- Inject version -->
 	<target name="inject-version">		
-		<loadfile property="file.contents" srcFile="${target.file}">
-			<filterchain>
-				<tokenfilter>
-					<replaceregex pattern="([0-9]+\.[0-9]+)(\.[0-9]+)" replace="${version}${build.int}" flags="gis" />
-				</tokenfilter>
-			</filterchain>
-		</loadfile>		
+		<echo>${target.file}</echo>		
+		<replaceregexp file="${target.file}"
+		               match="[0-9]+\.[0-9]+\.[0-9]+"
+		               replace="${version}${build.int}"
+		               byline="true"
+					   flags="gis"
+		/>
 	</target>	
 	
 	<!--  Sort Properties in prop file alphabetically -->

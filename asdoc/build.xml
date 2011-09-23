@@ -17,8 +17,45 @@
 	 
 	<!-- Prepare file list for inclusion in compc process ala ledtechdesign.com/2009/01/flex-shell-ant-tasks/ -->
 	<target name="resolve-class-path">
-		<echo message="${class.path}" />
-		<path id="list_1">
+		
+		<echo message="CLASS PATH: ${class.path}" />
+		
+		<!-- Convert the path to Unix so it's easier to map the classpath -->
+		<path id="class.path.element">
+			<pathelement location="${class.path}"/>
+		</path>		
+		<pathconvert property="unixfied.path" refid="class.path.element" />
+		<echo>Unixfied Path: ${unixfied.path}</echo>
+		
+		<path id="wl.path">
+			<pathelement location="${unixfied.path}"/>
+			<fileset dir="${unixfied.path}">
+				<include name="com/wezside/**" />
+				<exclude name="com/wezside/components/survey/**" />
+				<exclude name="**/test/**" />
+				<exclude name="**/gs/**" />
+				<exclude name="**/Animation/**" />
+				<exclude name="**/sample/**" />
+				<exclude name="**/test/**" />
+			</fileset>			
+	    </path>		
+
+		<!-- Get classpath -->
+		<pathconvert pathsep=" " property="doc" dirsep="." refid="wl.path">
+			<map from="${unixfied.path}" to="" />
+		</pathconvert>
+
+		<echo>DOC: ${doc}</echo>
+		
+		<!--
+		<path id="doc.path" location="${doc}" />
+		<pathconvert property="doc.classes" refid="doc.path" dirsep="." pathsep=" " >
+			
+		</pathconvert>
+		<echo>Space separated classes: ${doc.classes}</echo>
+	
+		
+		<path id="filteredClasses">		
 			<fileset dir="${class.path}">
 				<include name="com/wezside/**" />
 				<exclude name="com/wezside/components/survey/**" />
@@ -29,7 +66,8 @@
 				<exclude name="**/test/**" />
 			</fileset>
 		</path>
-		<pathconvert property="classes" pathsep=" " dirsep="." refid="list_1">
+		<echo>Filtered Classes: ${toString:filteredClasses}</echo>
+		<pathconvert property="classes" pathsep=" " dirsep="." refid="filteredClasses">
 			<map from="${class.path}/" to="" />
 			<mapper>
 				<chainedmapper>
@@ -37,7 +75,8 @@
 				</chainedmapper>
 			</mapper>
 		</pathconvert>
-		<echo message="Classes ${classes}" />
+		-->
+		
 	</target>		
 	
 	<target name="generate-docs" depends="resolve-class-path" if="classes">
