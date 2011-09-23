@@ -45,6 +45,13 @@
 			<entry key="build.int" type="int" default="0001" operation="+" pattern="0000" />
 		</propertyfile>
 		
+		<!-- Update README version number -->
+		<subant buildpath="." genericantfile="${basedir}/ant/util/replace-version/build.xml">
+			<property name="version" value="${version}"/>
+			<property name="build.int" value="${build.int}"/>		
+			<property name="target.file" value="${basedir}/README.md" />
+		</subant>
+				
 		<!-- Compile Toolkit SWC -->
 		<echo message="Compile Toolkit SWC ${version}${build.int}" />
 		<subant buildpath="." genericantfile="${basedir}/ant/flex/build.xml">
@@ -84,9 +91,6 @@
 	
 		<delete>
 			<fileset dir="${basedir}/../Toolkit-Components/lib/">
-			    <include name="wezside.toolkit.*"/>
-			</fileset>
-			<fileset dir="${basedir}/../Toolkit-Components/swc/">
 			    <include name="wezside.toolkit.*"/>
 			</fileset>
 		</delete>		
@@ -209,7 +213,7 @@
 			<property name="class.path" value="${basedir}/../Toolkit-Components/src/"/>
 		</subant>
 		
-		<!-- Commit to remote Git Repo 
+		<!-- Commit to remote Git Repo -->
 		<echo message="Git Operations for Toolkit API Docs ${version}${build.int}" />
 		<subant buildpath="${basedir}/../Toolkit-gh-pages" genericantfile="${basedir}/ant/git/build.xml">
 			<property name="GIT_HOME" value="${GIT_HOME}"/>
@@ -220,7 +224,7 @@
 			<property name="build.int" value="${build.int}"/>
 			<property name="branch" value="gh-pages"/>
 			<property name="remote.repo" value="origin"/>							
-		</subant>-->
+		</subant>
 	</target>
 	
 	<target name="build-all" depends="win,linux">
