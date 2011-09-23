@@ -6,6 +6,7 @@
 		
 		@param target.file The file contents to search through and replace
 		@param prop.file The property file 
+		@param searchPattern
 		 -->
 
 	<!-- Inject version -->
@@ -13,7 +14,7 @@
 		<loadfile property="file.contents" srcFile="${target.file}">
 			<filterchain>
 				<tokenfilter>
-					<replaceregex pattern="Build ([0-9]+\.[0-9]+)(\.[0-9]+)" replace="Build ${version}${build.int}" flags="gis" />
+					<replaceregex pattern="([0-9]+\.[0-9]+)(\.[0-9]+)" replace="${version}${build.int}" flags="gis" />
 				</tokenfilter>
 			</filterchain>
 		</loadfile>		
