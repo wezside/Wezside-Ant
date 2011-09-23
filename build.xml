@@ -29,7 +29,7 @@
 		<property name="GIT_CONFIG" value="${git.config.pc}"/>		
 		<property name="prop.file" value="${basedir}/ant/.properties"/>	
 		<taskdef resource="flexTasks.tasks" classpath="${FLEX_HOME}/ant/lib/flexTasks.jar" />	
-	</target>		
+	</target>
 	
 	<target name="clean">
 		<delete>
