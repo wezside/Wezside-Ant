@@ -37,6 +37,11 @@
 			    <include name="wezside.toolkit.*"/>
 			</fileset>
 		</delete>
+		<delete>
+			<fileset dir="${basedir}/../Toolkit-Components/swc/">
+			    <include name="wezside.toolkit.*" />
+			</fileset>
+		</delete>
 	</target>
 	
 	<target name="toolkit">

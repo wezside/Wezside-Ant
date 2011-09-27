@@ -12,8 +12,7 @@
 		@param class.path The class path for where the classes to be documented are
 		
 		@author Wesley.Swanepoel
-	-->
-	
+	-->	
 	 
 	<!-- Prepare file list for inclusion in compc process ala ledtechdesign.com/2009/01/flex-shell-ant-tasks/ -->
 	<target name="resolve-class-path">
@@ -50,9 +49,7 @@
 				</chainedmapper>
 			</mapper>
 		</pathconvert>
-
-		<echo>DOC CLASSES: ${classes}</echo>
-		
+		<echo>DOC CLASSES: ${classes}</echo>		
 	</target>		
 	
 	<target name="generate-docs" depends="resolve-class-path" if="classes">		
